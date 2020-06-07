@@ -5,4 +5,4 @@ salt="3329757864"
 q="$@"
 sign=`md5 -q -s "$appid$q$salt$secret_key"`
 echo "q=$q&from=en&to=zh&appid=$appid&salt=$salt&sign=$sign&1"  
-curl -s -d "q=$q&from=en&to=zh&appid=$appid&salt=$salt&sign=$sign"  "$translate_api_host" | jq '.trans_result[] | .dst + "\r" + .src'
+curl -s -d "q=$q&from=en&to=zh&appid=$appid&salt=$salt&sign=$sign"  "$translate_api_host" | jq  -r '.trans_result[] | .dst + .src' 

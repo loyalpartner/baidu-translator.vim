@@ -1,3 +1,8 @@
+" File: baidu-translator.vim
+" Author: lee
+" Description: 
+" Last Modified: 六月 08, 2020
+
 let g:baidu_translator_appid="20200607000488675"
 let g:baidu_translator_secret_key="Nb_cT61hFraVEUpkvp33"
 let g:baidu_translator_api_host="https://api.fanyi.baidu.com/api/trans/vip/translate"

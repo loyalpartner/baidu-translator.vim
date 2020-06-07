@@ -16,23 +16,14 @@ function BaiduTranslate(from, to, text) abort
   let l:sign = trim(l:sign)
 
   " curl -s -d data https://api.fanyi.baidu.com/api/trans/vip/translate | jq 'trans_result[0].dst'
-  " let l:command = "curl -s -d " . "\"" . 
-  "       \ "q=" . a:text . 
-  "       \ "&from=" . a:from .
-  "       \ "&to=" . a:to .
-  "       \ "&appid=" . g:baidu_translator_appid . 
-  "       \ "&salt=" . l:salt . 
-  "       \ "&sign=" . l:sign . 
-  "       \ "\" " . g:baidu_translator_api_host .
-  "       \ "| jq '.trans_result[] | .src + \"\r\" + .dst'"
-  let l:command = "curl -s -d " . "\"" . 
-        \ "&from=" . a:from .
-        \ "&to=" . a:to .
-        \ "&appid=" . g:baidu_translator_appid . 
-        \ "&salt=" . l:salt . 
-        \ "&sign=" . l:sign . 
-        \ "\" " .
-        \ "--data-urlencode \"q=".a:text."\"" .
+  let l:command = "curl -s -d " . '"' . 
+        \ '&from=' . a:from .
+        \ '&to=' . a:to .
+        \ '&appid=' . g:baidu_translator_appid . 
+        \ '&salt=' . l:salt . 
+        \ '&sign=' . l:sign . 
+        \ '" ' .
+        \ '--data-urlencode "q='.a:text.'"' .
         \ " ". g:baidu_translator_api_host .
         \ "| jq '.trans_result[] | .src + \"\r\" + .dst'"
 

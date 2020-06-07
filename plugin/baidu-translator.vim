@@ -4,6 +4,15 @@ let g:baidu_translator_api_host="https://api.fanyi.baidu.com/api/trans/vip/trans
 
 let g:debug_switch = 0
 
+function s:md5(text) abort
+  if executable("md5")
+    return trim(system("md5 -q -s " . a:text))
+  elseif executable("md5sum")
+    return trim(system("echo -n ". a:text."| md5sum")[0:-3])
+  end
+  echoerr "can't found md5 program."
+endfunction
+
 function BaiduTranslate(from, to, text) abort
 
   if !exists("g:baidu_translator_appid")
@@ -12,11 +21,10 @@ function BaiduTranslate(from, to, text) abort
   end
 
   let l:salt = "3329757864"
-  let l:sign = system("md5 -q -s " . (g:baidu_translator_appid . "\"". a:text . "\"" . l:salt . g:baidu_translator_secret_key))
-  let l:sign = trim(l:sign)
+  let l:sign = s:md5(g:baidu_translator_appid . "\"". a:text . "\"" . l:salt . g:baidu_translator_secret_key)
 
   " curl -s -d data --data-urlencode "q=%s" https://api.fanyi.baidu.com/api/trans/vip/translate | jq -r 'trans_result[0] | .dst .src'
-  let l:command = "curl -s -d " . '"' . 
+  let l:command = 'curl -s -d "' .
         \ '&from=' . a:from .
         \ '&to=' . a:to .
         \ '&appid=' . g:baidu_translator_appid . 
@@ -53,10 +61,11 @@ function! s:opfunc(type, ...) abort " {{{1
   end
 
   let l:result = BaiduTranslate("cn", "zh", escape(@", "\"'\\/"))
-  let l:temp = tempname()
   let l:result = substitute(l:result, '\r', '\n','g')
   let l:lines = split(l:result, '\n')
-  call writefile(map(l:lines, 'trim(v:val)'), l:temp, "a")
+
+  let l:temp = tempname()
+  call writefile(l:lines, l:temp, "a")
   exec 'pedit '.l:temp.'|wincmd P|nnoremap <buffer> q :bd<CR>'
 
   call setreg(reg, reg_save)

@@ -77,5 +77,3 @@ function! s:opfunc(type, ...) abort " {{{1
 endfunction
 
 nnoremap <expr> <Plug>BaiduTranslate <SID>opfunc('setup')
-nmap gs <Plug>BaiduTranslate
-vnoremap gs :<c-u>call <SID>opfunc(visualmode(), visualmode() ==# 'V' ? 0 : 1)<cr>

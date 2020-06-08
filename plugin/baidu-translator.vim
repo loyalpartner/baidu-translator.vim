@@ -25,8 +25,11 @@ function BaiduTranslate(from, to, text) abort
     return
   end
 
+  let text = substitute(a:text, "\\n\\s*", " ", "g")
+  let text = substitute(text, "\\.\\s", ".\n", "g")
+
   let l:salt = "3329757864"
-  let l:sign = s:md5(g:baidu_translator_appid . "\"". a:text . "\"" . l:salt . g:baidu_translator_secret_key)
+  let l:sign = s:md5(g:baidu_translator_appid . "\"". text . "\"" . l:salt . g:baidu_translator_secret_key)
 
   " curl -s -d data --data-urlencode "q=%s" https://api.fanyi.baidu.com/api/trans/vip/translate | jq -r 'trans_result[0] | .dst .src'
   let l:command = 'curl -s -d "' .
@@ -36,7 +39,7 @@ function BaiduTranslate(from, to, text) abort
         \ '&salt=' . l:salt . 
         \ '&sign=' . l:sign . 
         \ '" ' .
-        \ '--data-urlencode "q='.a:text.'"' .
+        \ '--data-urlencode "q='.text.'"' .
         \ " ". g:baidu_translator_api_host .
         \ "| jq -r '.trans_result[] | .src + \"\r\" +  .dst'"
 

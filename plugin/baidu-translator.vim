@@ -3,8 +3,6 @@
 " Description: 
 " Last Modified: 六月 08, 2020
 
-let g:baidu_translator_appid="20200607000488675"
-let g:baidu_translator_secret_key="Nb_cT61hFraVEUpkvp33"
 let g:baidu_translator_api_host="https://api.fanyi.baidu.com/api/trans/vip/translate"
 
 let g:debug_switch = 0
@@ -41,7 +39,7 @@ function BaiduTranslate(from, to, text) abort
         \ '" ' .
         \ '--data-urlencode "q='.text.'"' .
         \ " ". g:baidu_translator_api_host .
-        \ "| jq -r '.trans_result[] | .src + \"\r\" +  .dst'"
+        \ "| jq -r '.trans_result[] | .src,.dst'"
 
   let l:result = system(l:command)
   return l:result

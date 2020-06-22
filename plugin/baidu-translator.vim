@@ -72,9 +72,10 @@ function! s:opfunc(type, ...) abort " {{{1
 
   let l:temp = tempname()
   call writefile(l:lines, l:temp, "a")
-  exec 'pedit '.l:temp.'|wincmd P|nnoremap <buffer> q :bd<CR>'
+  exec 'pedit '.l:temp.'|wincmd P|nnoremap <buffer> q :bd<CR>|wincmd p'
 
   call setreg(reg, reg_save)
 endfunction
 
 nnoremap <expr> <Plug>BaiduTranslate <SID>opfunc('setup')
+nnoremap <expr> <Plug>BaiduTranslateSentence 'mz'.<SID>opfunc('setup').'as`z'
